@@ -166,7 +166,31 @@
 ##
 
 
+<<<<<<< HEAD
 
+=======
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+print (f"""{bcolors.HEADER}
+  _  __              _                ____              
+ | |/ /___ _   _  __| | ___  ___ _ __/ ___| _ __  _   _ 
+ | ' // _ \ | | |/ _` |/ _ \/ _ \ '_ \___ \| '_ \| | | |
+ | . \  __/ |_| | (_| |  __/  __/ |_) |__) | |_) | |_| |
+ |_|\_\___|\__, |\__,_|\___|\___| .__/____/| .__/ \__, |
+           |___/                |_|        |_|    |___/ 
+{bcolors.ENDC}
+{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}
+""")
+>>>>>>> 13971e0 (This is a new commit for what I originally planned to be amended)
         
 
 from selenium import webdriver
@@ -178,6 +202,11 @@ from selenium.webdriver.support.ui import Select
 import csv
 import datetime
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 13971e0 (This is a new commit for what I originally planned to be amended)
 # Get the current date and time
 current_datetime = datetime.datetime.now()
 
@@ -310,12 +339,20 @@ driver.execute_script("window.open();")
 # Switch to the new tab
 driver.switch_to.window(driver.window_handles[1])
 
+<<<<<<< HEAD
 mainkeyword = 'fairy coloring book for adult'
+=======
+mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keywword: {bcolors.ENDC}")
+>>>>>>> 13971e0 (This is a new commit for what I originally planned to be amended)
 query = ('chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={0}&service=amazon').format(mainkeyword)
 driver.get(query)
 
 listk = []
+<<<<<<< HEAD
 input('are the keywords downloaded!: ')
+=======
+input(f'{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Are the keywords downloaded! | Press Enter{bcolors.ENDC} \n')
+>>>>>>> 13971e0 (This is a new commit for what I originally planned to be amended)
 
 til = mainkeyword.replace(' ', '-')
 csv_file_path = (r'amazon-keywords-{0}--{1}.csv').format(til, formatted_datetime)
@@ -353,7 +390,11 @@ for i in listk:
     except:
         results = res.partition('of ')[2]
     ress = results.partition(' results for')[0]  
+<<<<<<< HEAD
     print (i+'------> '+ress)
+=======
+    print (i+f'{bcolors.OKGREEN}--------->{bcolors.ENDC}'+ress)
+>>>>>>> 13971e0 (This is a new commit for what I originally planned to be amended)
 
 
 
