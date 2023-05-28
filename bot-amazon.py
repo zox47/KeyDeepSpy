@@ -220,4 +220,4 @@ for i in listk:
     ress = results.partition(' results for')[0]
     # print (i+'------> '+ress)
     print(
-        f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f'{bcolors.OKGREEN} |----> {bcolors.ENDC}' + ress + f" |BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" +"\n")
+        f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f'{bcolors.OKGREEN} |----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" +"\n")
