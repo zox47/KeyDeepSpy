@@ -1,3 +1,29 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+# import pause
+from selenium.webdriver.support.ui import Select
+import csv
+import datetime
+import pause
+
+def checkbsr():
+    global ffg
+    try:
+        element = driver.find_element(By.CSS_SELECTOR, "h3.d-flex.align-items-center.py-0")
+
+        # Extract the value
+        ffg = element.text.split()[-1]
+
+        return ffg
+
+    except:
+        pause.seconds(3)
+        checkbsr()
+        return ffg
+
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -21,14 +47,6 @@ print(f"""{bcolors.HEADER}
 {bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}
 """)
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-# import pause
-from selenium.webdriver.support.ui import Select
-import csv
-import datetime
 
 # Get the current date and time
 current_datetime = datetime.datetime.now()
@@ -60,6 +78,8 @@ options.add_argument("--fast-start")  # Enable fast start
 options.add_argument("--ignore-certificate-errors")  # Ignore certificate errors
 options.add_argument("--disable-popup-blocking")
 options.add_extension('getkeyword.crx')
+options.add_extension('bsr.crx')
+
 options.add_experimental_option('prefs', {
     'download.default_directory': download_directory,
     'download.prompt_for_download': False,
@@ -85,8 +105,14 @@ driver.get('https://www.amazon.com/')
 
 driver.switch_to.window(driver.window_handles[1])
 
-driver.close()
+
+
 driver.switch_to.window(driver.window_handles[0])
+
+driver.close()
+
+driver.switch_to.window(driver.window_handles[0])
+
 
 # Wait for the page to load and find the location element
 location_element = WebDriverWait(driver, 10).until(
@@ -181,6 +207,10 @@ for i in listk:
     driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
     driver.find_element("id", 'nav-search-submit-button').click()
     res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
+    bsr = checkbsr()
+
+
+
     if "over" in str(res):
         results = res.partition('over ')[2]
     elif "of" in str(res):
@@ -190,4 +220,4 @@ for i in listk:
     ress = results.partition(' results for')[0]
     # print (i+'------> '+ress)
     print(
-        f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f'{bcolors.OKGREEN} |---------> {bcolors.ENDC}' + ress + "\n")
+        f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f'{bcolors.OKGREEN} |----> {bcolors.ENDC}' + ress + f" |BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" +"\n")
