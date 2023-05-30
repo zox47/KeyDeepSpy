@@ -6,8 +6,6 @@ from selenium.webdriver.support.ui import Select
 import csv
 import datetime
 import pause
-
-
 def extractkey():
     dirs = input("Enter Dir Of Your File Keyword: ")
     for key in open(dirs, 'r').read().split('\n'):
@@ -15,20 +13,52 @@ def extractkey():
         print(co[0])
 
 
+
 def checkbsr():
     global ffg
-    max_retries = 10
-    retries = 0
-    while retries < max_retries:
-        try:
-            element = driver.find_element(By.CSS_SELECTOR, "h3.d-flex.align-items-center.py-0")
-            ffg = element.text.split()[-1]
-            return ffg
-        except:
-            pause.seconds(3)
-            retries += 1
-    return ffg
+    try:
+        #print(driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text)
+        if driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text != "Preparing the results...":
+            driver.refresh()
+            checkbsr()
+        else:
+            pass
+    except:
+        pass
 
+
+    try:
+        element = driver.find_element(By.CSS_SELECTOR, "h3.d-flex.align-items-center.py-0")
+
+        # Extract the value
+        ffg = element.text.split()[-1]
+
+        return ffg
+
+    except:
+        pause.seconds(3)
+        checkbsr()
+        return ffg
+
+
+
+# def checkbsr():
+#     global ffg
+#     print(driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text)
+#     if driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text != "Preparing the results...":
+#         driver.refresh()
+#         checkbsr()
+#     else:
+#         pass
+#     try:
+#         element = driver.find_element(By.CSS_SELECTOR, "h3.d-flex.align-items-center.py-0")
+#
+#         ffg = element.text.split()[-1]
+#         return ffg
+#     except:
+#         pause.seconds(3)
+#         return ffg
+#
 
 class bcolors:
     HEADER = '\033[95m'
