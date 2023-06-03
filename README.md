@@ -1,4 +1,5 @@
-# amazonkeyword
+# KeyDeepSpy
+
 
 The tool you are describing would be a keyword suggestion and analysis tool for Amazon. Here's a breakdown of its features and functionality:
 
