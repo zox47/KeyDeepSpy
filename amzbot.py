@@ -11,16 +11,13 @@ def extractkey():
     for key in open(dirs, 'r').read().split('\n'):
         co = key.split(':', 3)
         print(co[0])
-
-
-
-def checkbsr():
+def checkbsr(driver):
     global ffg
     try:
         #print(driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text)
         if driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text != "Preparing the results...":
             driver.refresh()
-            checkbsr()
+            checkbsr(driver)
         else:
             pass
     except:
@@ -37,28 +34,9 @@ def checkbsr():
 
     except:
         pause.seconds(3)
-        checkbsr()
+        checkbsr(driver)
         return ffg
 
-
-
-# def checkbsr():
-#     global ffg
-#     print(driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text)
-#     if driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text != "Preparing the results...":
-#         driver.refresh()
-#         checkbsr()
-#     else:
-#         pass
-#     try:
-#         element = driver.find_element(By.CSS_SELECTOR, "h3.d-flex.align-items-center.py-0")
-#
-#         ffg = element.text.split()[-1]
-#         return ffg
-#     except:
-#         pause.seconds(3)
-#         return ffg
-#
 
 class bcolors:
     HEADER = '\033[95m'
@@ -70,6 +48,154 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+def keyextra():
+    # Get the current date and time
+    current_datetime = datetime.datetime.now()
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d")
+
+    download_directory = r"C:\Users\viiru\Desktop\bot amazon"
+
+    options = webdriver.ChromeOptions()
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-browser-side-navigation")
+    options.add_argument("--disable-features=VizDisplayCompositor")
+    options.add_argument("--disable-features=NetworkService")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--dns-prefetch-disable")
+    options.add_experimental_option("detach", True)
+    options.add_argument("--fast-start")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--disable-popup-blocking")
+    options.add_extension('getkeyword.crx')
+    options.add_extension('bsr.crx')
+
+    options.add_experimental_option('prefs', {
+        'download.default_directory': download_directory,
+        'download.prompt_for_download': False,
+        'download.directory_upgrade': True,
+        'safebrowsing.enabled': True
+    })
+
+    driver = webdriver.Chrome(options=options)
+    print(f"{bcolors.HEADER}{bcolors.BOLD}----------------------------------{bcolors.ENDC}")
+
+    print(f"{bcolors.HEADER}{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}")
+
+    driver.get('https://www.amazon.com/')
+
+    driver.switch_to.window(driver.window_handles[1])
+    driver.switch_to.window(driver.window_handles[0])
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
+    try:
+        location_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+        )
+        location_element.click()
+    except:
+        driver.refresh()
+        location_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+        )
+        location_element.click()
+
+
+    postal_code_input = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
+    )
+    postal_code_input.clear()
+    postal_code_input.send_keys('10001')
+
+    apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
+    apply_button.click()
+
+    apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
+    apply_buttons.click()
+
+    driver.refresh()
+
+    driver.find_element("id", 'nav-search-dropdown-card').click()
+
+    dropdown_element = driver.find_element("id", "searchDropdownBox")
+    dropdown = Select(dropdown_element)
+    desired_value = "search-alias=stripbooks"
+    dropdown.select_by_value(desired_value)
+
+    driver.find_element("id", 'twotabsearchtextbox').click()
+
+    driver.execute_script("window.open();")
+    driver.switch_to.window(driver.window_handles[1])
+
+    mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keyword: {bcolors.ENDC}")
+    query = f'chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={mainkeyword}&service=amazon'
+    driver.get(query)
+
+    listk = []
+    input(f'{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Are the keywords downloaded! | Press Enter{bcolors.ENDC} \n')
+
+
+    til = mainkeyword.replace(' ', '-')
+    csv_file_path = f'amazon-keywords-{til}--{formatted_datetime}.csv'
+
+    print(
+        f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Total Keyword Find{bcolors.ENDC} ===> {len(open(csv_file_path, 'r').read().splitlines())}")
+
+    with open(csv_file_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        first_column = [row[0] for row in csv_reader]
+        for value in first_column:
+            if str(value) != 'Keyword':
+                listk.append(value)
+
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
+
+    count = 0
+    ll = []
+    for i in listk:
+        count += 1
+        try:
+            driver.find_element("id", 'twotabsearchtextbox').clear()
+        except:
+            pass
+        driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
+        driver.find_element("id", 'nav-search-submit-button').click()
+        res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
+        bsr = checkbsr(driver)
+
+        if "over" in str(res):
+            results = res.partition('over ')[2]
+        elif "of" in str(res):
+            results = res.partition('of ')[2]
+        else:
+            results = res
+        ress = results.partition(' results for')[0]
+        ll.append(f'{i}:{ress}:{bsr}')
+        print(
+            f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f' {bcolors.OKGREEN}|{bcolors.ENDC} RESULTS {bcolors.OKGREEN}|----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" + "\n")
+
+    save = input(
+        f"{bcolors.OKGREEN}+{bcolors.ENDC} Save this keyword in File {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
+    if save == "y" or  save == "Y":
+        file = open(f'keyword-{til}.txt', 'w')
+        sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
+        for i in sorted_list:
+            file.write(i + "\n")
+        file.close()
+
+        again = input(
+            f"{bcolors.OKGREEN}+{bcolors.ENDC} Start New Session: {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
+        if again == "y" or again == "Y":
+            driver.close()
+            keyextra()
+    else:
+        driver.close()
+
+
 
 
 print(f"""{bcolors.HEADER}
@@ -97,131 +223,5 @@ if choice == 1:
         pass
     else:
         exit()
-
-# Get the current date and time
-current_datetime = datetime.datetime.now()
-formatted_datetime = current_datetime.strftime("%Y-%m-%d")
-
-download_directory = r"C:\Users\viiru\Desktop\bot amazon"
-
-options = webdriver.ChromeOptions()
-options.add_argument("--disable-gpu")
-options.add_argument("--disable-infobars")
-options.add_argument("--disable-notifications")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--disable-browser-side-navigation")
-options.add_argument("--disable-features=VizDisplayCompositor")
-options.add_argument("--disable-features=NetworkService")
-options.add_argument("--no-sandbox")
-options.add_argument("--dns-prefetch-disable")
-options.add_experimental_option("detach", True)
-options.add_argument("--fast-start")
-options.add_argument("--ignore-certificate-errors")
-options.add_argument("--disable-popup-blocking")
-options.add_extension('getkeyword.crx')
-options.add_extension('bsr.crx')
-
-options.add_experimental_option('prefs', {
-    'download.default_directory': download_directory,
-    'download.prompt_for_download': False,
-    'download.directory_upgrade': True,
-    'safebrowsing.enabled': True
-})
-
-driver = webdriver.Chrome(options=options)
-print(f"{bcolors.HEADER}{bcolors.BOLD}----------------------------------{bcolors.ENDC}")
-
-print(f"{bcolors.HEADER}{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}")
-
-driver.get('https://www.amazon.com/')
-
-driver.switch_to.window(driver.window_handles[1])
-driver.switch_to.window(driver.window_handles[0])
-driver.close()
-driver.switch_to.window(driver.window_handles[0])
-
-location_element = WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
-)
-location_element.click()
-
-postal_code_input = WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
-)
-postal_code_input.clear()
-postal_code_input.send_keys('10001')
-
-apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
-apply_button.click()
-
-apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
-apply_buttons.click()
-
-driver.refresh()
-
-driver.find_element("id", 'nav-search-dropdown-card').click()
-
-dropdown_element = driver.find_element("id", "searchDropdownBox")
-dropdown = Select(dropdown_element)
-desired_value = "search-alias=stripbooks"
-dropdown.select_by_value(desired_value)
-
-driver.find_element("id", 'twotabsearchtextbox').click()
-
-driver.execute_script("window.open();")
-driver.switch_to.window(driver.window_handles[1])
-
-mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keyword: {bcolors.ENDC}")
-query = f'chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={mainkeyword}&service=amazon'
-driver.get(query)
-
-listk = []
-input(f'{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Are the keywords downloaded! | Press Enter{bcolors.ENDC} \n')
-
-til = mainkeyword.replace(' ', '-')
-csv_file_path = f'amazon-keywords-{til}--{formatted_datetime}.csv'
-
-with open(csv_file_path, 'r') as file:
-    csv_reader = csv.reader(file)
-    first_column = [row[0] for row in csv_reader]
-    for value in first_column:
-        if str(value) != 'Keyword':
-            listk.append(value)
-
-driver.close()
-driver.switch_to.window(driver.window_handles[0])
-
-count = 0
-ll = []
-for i in listk:
-    count += 1
-    try:
-        driver.find_element("id", 'twotabsearchtextbox').clear()
-    except:
-        pass
-    driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
-    driver.find_element("id", 'nav-search-submit-button').click()
-    res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
-    bsr = checkbsr()
-
-    if "over" in str(res):
-        results = res.partition('over ')[2]
-    elif "of" in str(res):
-        results = res.partition('of ')[2]
-    else:
-        results = res
-    ress = results.partition(' results for')[0]
-    ll.append(f'{i}:{ress}:{bsr}')
-    print(
-        f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f'{bcolors.OKGREEN} |----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" + "\n")
-
-save = input(
-    f"{bcolors.OKGREEN}+{bcolors.ENDC} Save this keyword in File {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
-if save == "y":
-    file = open(f'keyword-{til}.txt', 'w')
-    sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
-    for i in sorted_list:
-        file.write(i + "\n")
-    file.close()
 else:
-    driver.close()
+    keyextra()
