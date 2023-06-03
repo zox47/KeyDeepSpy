@@ -8,7 +8,7 @@ BSR (Best Sellers Rank) Checking: The tool then retrieves the search results for
 
 Sorting by BSR: After gathering the BSR data for each product, the tool organizes the results in a table format, sorting the keywords from the minimum BSR (indicating high demand) to the highest BSR (indicating lower demand). This ranking enables users to identify keywords that are associated with popular and potentially profitable products.
 
-Additional Data: The tool can also provide additional information alongside the BSR, such as product titles, prices, customer ratings, and reviews. This data can help users make informed decisions about keyword targeting and product selection.
+Additional Data: The tool can also provide additional information alongside the BSR, such as results, and bsr. This data can help users make informed decisions about keyword targeting and product selection.
 
 Overall, this tool assists sellers and marketers in optimizing their Amazon product listings by suggesting relevant keywords and providing insights into market demand through BSR analysis. By sorting the results in a table, users can easily identify high-potential keywords and prioritize them for their marketing strategies.
 
