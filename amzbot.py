@@ -6,6 +6,9 @@ from selenium.webdriver.support.ui import Select
 import csv
 import datetime
 import pause
+import pandas as pd
+from tabulate import tabulate
+
 def extractkey():
     dirs = input("Enter Dir Of Your File Keyword: ")
     for key in open(dirs, 'r').read().split('\n'):
@@ -186,6 +189,16 @@ def keyextra():
         for i in sorted_list:
             file.write(i + "\n")
         file.close()
+
+        data = []
+        for item in sorted_list:
+            keyword, count, value = item.split(':')
+            data.append([keyword, count, value])
+
+        df = pd.DataFrame(data, columns=['Keyword', 'Results', 'Bsr'])
+
+        # Display DataFrame as ASCII table
+        print(tabulate(df, headers='keys', tablefmt='psql'))
 
         again = input(
             f"{bcolors.OKGREEN}+{bcolors.ENDC} Start New Session: {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
