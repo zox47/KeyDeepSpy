@@ -83,7 +83,7 @@ class bcolors:
 
 
 
-def keyextra():
+def keyextra(market):
     # Get the current date and time
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime("%Y-%m-%d")
@@ -385,7 +385,6 @@ print(f"""{bcolors.HEADER}
 choice = int(input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Your Choice: {bcolors.ENDC}"))
 
 if choice == 1:
-    market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
     extractkey()
 
     complt = input(
@@ -395,7 +394,8 @@ if choice == 1:
     else:
         exit()
 elif choice == 2:
-    keyextra()
+    market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
+    keyextra(market)
 elif choice == 3:
     sortbsr()
 
