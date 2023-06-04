@@ -39,7 +39,7 @@ except ImportError:
 
 
 def extractkey():
-    dirs = input("Enter Dir Of Your File Keyword: ")
+    dirs = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Location Of Your File Keyword:{bcolors.ENDC} ")
     for key in open(dirs, 'r').read().split('\n'):
         co = key.split(':', 3)
         print(co[0])
