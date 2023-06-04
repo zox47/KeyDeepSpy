@@ -1,13 +1,26 @@
+# INSTALL PACKAGE
+import os
+try:
+    os.system('pip install webdriver-manager')
+    os.system('pip install selenium')
+    os.system('pip install datetime')
+    os.system('pip install python-csv')
+    os.system('pip install tabulate')
+except:
+    pass
+
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import csv
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 import datetime
 import pause
 import pandas as pd
-import os
 from tabulate import tabulate
 
 
@@ -91,7 +104,8 @@ def keyextra():
         'safebrowsing.enabled': True
     })
 
-    driver = webdriver.Chrome(options=options)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     print(f"{bcolors.HEADER}{bcolors.BOLD}----------------------------------{bcolors.ENDC}")
 
     print(f"{bcolors.HEADER}{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}")
@@ -180,9 +194,6 @@ def keyextra():
 
         apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
         apply_button.click()
-
-        apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
-        apply_buttons.click()
 
         driver.refresh()
 
