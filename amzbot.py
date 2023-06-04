@@ -1,28 +1,41 @@
 # INSTALL PACKAGE
 import os
 try:
-    os.system('pip install webdriver-manager')
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import Select
+    from selenium.webdriver.chrome.service import Service
+
+except ImportError:
     os.system('pip install selenium')
-    os.system('pip install datetime')
+try:
+    import csv
+except ImportError:
     os.system('pip install python-csv')
+try:
+    from webdriver_manager.chrome import ChromeDriverManager
+except ImportError:
+    os.system('pip install webdriver-manager')
+
+try:
+    import datetime
+except ImportError:
+    os.system('pip install datetime')
+
+try:
+    import pause
+except ImportError:
+    os.system('pip install pause')
+try:
+    import pandas as pd
+except ImportError:
+    os.system('pip install pandas')
+try:
+    from tabulate import tabulate
+except ImportError:
     os.system('pip install tabulate')
-except:
-    pass
-
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
-import csv
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-import datetime
-import pause
-import pandas as pd
-from tabulate import tabulate
-
 
 
 def extractkey():
@@ -96,6 +109,7 @@ def keyextra():
     options.add_argument("--disable-popup-blocking")
     options.add_extension('getkeyword.crx')
     options.add_extension('bsr.crx')
+   # options.add_argument("--disable-popup-blocking")
 
     options.add_experimental_option('prefs', {
         'download.default_directory': download_directory,
@@ -121,10 +135,18 @@ def keyextra():
             acceptc.click()
         except:
             pass
-        driver.switch_to.window(driver.window_handles[1])
-        driver.switch_to.window(driver.window_handles[0])
-        driver.close()
-        driver.switch_to.window(driver.window_handles[0])
+
+        main_window_handle = driver.current_window_handle
+
+        # Loop through all window handles and close any tabs except the main driver tab
+        for handle in driver.window_handles:
+            if handle != main_window_handle:
+                driver.switch_to.window(handle)
+                driver.close()
+
+        # Switch back to the main driver tab
+        driver.switch_to.window(main_window_handle)
+
         try:
             location_element = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
@@ -170,10 +192,18 @@ def keyextra():
         except:
             pass
 
-        driver.switch_to.window(driver.window_handles[1])
-        driver.switch_to.window(driver.window_handles[0])
-        driver.close()
-        driver.switch_to.window(driver.window_handles[0])
+        main_window_handle = driver.current_window_handle
+
+        # Loop through all window handles and close any tabs except the main driver tab
+        for handle in driver.window_handles:
+            if handle != main_window_handle:
+                driver.switch_to.window(handle)
+                driver.close()
+
+        # Switch back to the main driver tab
+        driver.switch_to.window(main_window_handle)
+
+
         try:
             location_element = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
