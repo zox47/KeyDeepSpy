@@ -238,27 +238,49 @@ def keyextra():
 
     count = 0
     ll = []
-    for i in listk:
-        count += 1
-        try:
-            driver.find_element("id", 'twotabsearchtextbox').clear()
-        except:
-            pass
-        driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
-        driver.find_element("id", 'nav-search-submit-button').click()
-        res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
-        bsr = checkbsr(driver)
+    if market == "fr" or market == "FR":
+        for i in listk:
+            count += 1
+            try:
+                driver.find_element("id", 'twotabsearchtextbox').clear()
+            except:
+                pass
+            driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
+            driver.find_element("id", 'nav-search-submit-button').click()
+            res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
+            bsr = checkbsr(driver)
 
-        if "over" in str(res):
-            results = res.partition('over ')[2]
-        elif "of" in str(res):
-            results = res.partition('of ')[2]
-        else:
-            results = res
-        ress = results.partition(' results for')[0]
-        ll.append(f'{i}:{ress}:{bsr}')
-        print(
-            f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f' {bcolors.OKGREEN}|{bcolors.ENDC} RESULTS {bcolors.OKGREEN}|----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" + "\n")
+            if "plus de" in str(res):
+                results = res.partition('plus de ')[2]
+            else:
+                results = res
+            ress = results.partition(' résultats pour')[0]
+            ll.append(f'{i}:{ress}:{bsr}')
+            print(
+                f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f' {bcolors.OKGREEN}|{bcolors.ENDC} RESULTS {bcolors.OKGREEN}|----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" + "\n")
+    elif market == "com" or market == "COM" or market == "uk" or market == "UK":
+        for i in listk:
+            count += 1
+            try:
+                driver.find_element("id", 'twotabsearchtextbox').clear()
+            except:
+                pass
+            driver.find_element("id", 'twotabsearchtextbox').send_keys(i)
+            driver.find_element("id", 'nav-search-submit-button').click()
+            res = driver.find_element(By.XPATH, '//*[@id="search"]/span/div/h1/div/div[1]/div/div/span[1]').text
+            bsr = checkbsr(driver)
+
+            if "over" in str(res):
+                results = res.partition('over ')[2]
+            elif "of" in str(res):
+                results = res.partition('of ')[2]
+            else:
+                results = res
+            ress = results.partition(' results for')[0]
+            ll.append(f'{i}:{ress}:{bsr}')
+            print(
+                f"{bcolors.OKGREEN}[{count}]{bcolors.ENDC} " + i + f' {bcolors.OKGREEN}|{bcolors.ENDC} RESULTS {bcolors.OKGREEN}|----> {bcolors.ENDC}' + ress + f"{bcolors.OKGREEN} | {bcolors.ENDC}BSR {bcolors.OKGREEN}|---->{bcolors.ENDC} {bsr}" + "\n")
+
 
     save = input(
         f"{bcolors.OKGREEN}+{bcolors.ENDC} Save this keyword in File {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
