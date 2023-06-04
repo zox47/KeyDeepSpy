@@ -7,6 +7,7 @@ import csv
 import datetime
 import pause
 import pandas as pd
+import os
 from tabulate import tabulate
 
 def extractkey():
@@ -57,7 +58,10 @@ def keyextra():
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime("%Y-%m-%d")
 
-    download_directory = r"C:\Users\viiru\Desktop\bot amazon"
+
+    # get the current working directory
+    download_directory = os.getcwd()
+
 
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-gpu")
