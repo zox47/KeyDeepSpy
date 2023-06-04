@@ -345,6 +345,24 @@ def keyextra():
     else:
         driver.close()
 
+def sortbsr():
+    sorted_list = []
+    data = []
+    dirs = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Dir Of Your File Keyword:{bcolors.ENDC} ")
+    for key in open(dirs, 'r').read().split('\n'):
+        sorted_list.append(key)
+
+    clean = [item for item in sorted_list if item]
+
+    sorted_lists = sorted(clean, key=lambda item: int(item.split(':')[2].replace(',', '')))
+
+    for item in sorted_lists:
+        if item:
+            keyword, count, value = item.split(':')
+            data.append([keyword, count, value])
+
+    df = pd.DataFrame(data, columns=['Keyword', 'Results', 'Bsr'])
+    print(tabulate(df, headers='keys', tablefmt='psql'))
 
 
 
@@ -360,13 +378,14 @@ print(f"""{bcolors.HEADER}
 --------------------------------|
 {bcolors.OKGREEN}[1]{bcolors.ENDC} - {bcolors.BOLD}Extract Keyword From File{bcolors.ENDC} |
 {bcolors.OKGREEN}[2]{bcolors.ENDC} - {bcolors.BOLD}Extract Keyword From Web{bcolors.ENDC}  |
+{bcolors.OKGREEN}[3]{bcolors.ENDC} - {bcolors.BOLD}Sort Keyword By Bsr{bcolors.ENDC}       |
 --------------------------------|
 """)
 
 choice = int(input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Your Choice: {bcolors.ENDC}"))
-market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
 
 if choice == 1:
+    market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
     extractkey()
 
     complt = input(
@@ -375,5 +394,9 @@ if choice == 1:
         pass
     else:
         exit()
-else:
+elif choice == 2:
     keyextra()
+elif choice == 3:
+    sortbsr()
+
+
