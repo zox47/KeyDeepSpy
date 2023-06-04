@@ -159,7 +159,6 @@ def keyextra():
             )
             location_element.click()
 
-
         postal_code_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
         )
@@ -178,11 +177,6 @@ def keyextra():
             apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
             apply_button.click()
             pause.seconds(1)
-
-
-
-
-        #
 
         driver.refresh()
 
