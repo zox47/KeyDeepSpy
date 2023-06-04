@@ -10,6 +10,8 @@ import pandas as pd
 import os
 from tabulate import tabulate
 
+
+
 def extractkey():
     dirs = input("Enter Dir Of Your File Keyword: ")
     for key in open(dirs, 'r').read().split('\n'):
@@ -53,6 +55,8 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+
 def keyextra():
     # Get the current date and time
     current_datetime = datetime.datetime.now()
@@ -91,48 +95,108 @@ def keyextra():
     print(f"{bcolors.HEADER}{bcolors.BOLD}----------------------------------{bcolors.ENDC}")
 
     print(f"{bcolors.HEADER}{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}")
+    if market == "com" or market == "uk":
+        if market == "uk":
+            driver.get('https://www.amazon.co.uk/')
+        else:
+            driver.get('https://www.amazon.com/')
+        try:
+            acceptc = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'sp-cc-accept'))
+            )
+            acceptc.click()
+        except:
+            pass
+        driver.switch_to.window(driver.window_handles[1])
+        driver.switch_to.window(driver.window_handles[0])
+        driver.close()
+        driver.switch_to.window(driver.window_handles[0])
+        try:
+            location_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+            )
+            location_element.click()
+        except:
+            driver.refresh()
+            location_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+            )
+            location_element.click()
 
-    driver.get('https://www.amazon.com/')
 
-    driver.switch_to.window(driver.window_handles[1])
-    driver.switch_to.window(driver.window_handles[0])
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
-    try:
-        location_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+        postal_code_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
         )
-        location_element.click()
-    except:
+        postal_code_input.clear()
+        postal_code_input.send_keys('10001')
+
+        apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
+        apply_button.click()
+
+        apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
+        apply_buttons.click()
+
         driver.refresh()
-        location_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+
+        driver.find_element("id", 'nav-search-dropdown-card').click()
+
+        dropdown_element = driver.find_element("id", "searchDropdownBox")
+        dropdown = Select(dropdown_element)
+        desired_value = "search-alias=stripbooks"
+        dropdown.select_by_value(desired_value)
+
+        driver.find_element("id", 'twotabsearchtextbox').click()
+    elif market == "fr" or market == "FR":
+        driver.get('https://www.amazon.fr/')
+        try:
+            acceptc = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'sp-cc-accept'))
+            )
+            acceptc.click()
+        except:
+            pass
+
+        driver.switch_to.window(driver.window_handles[1])
+        driver.switch_to.window(driver.window_handles[0])
+        driver.close()
+        driver.switch_to.window(driver.window_handles[0])
+        try:
+            location_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+            )
+            location_element.click()
+        except:
+            driver.refresh()
+            location_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'nav-global-location-data-modal-action'))
+            )
+            location_element.click()
+
+        postal_code_input = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
         )
-        location_element.click()
+        postal_code_input.clear()
+        postal_code_input.send_keys('75001')
+
+        apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
+        apply_button.click()
+
+        apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
+        apply_buttons.click()
+
+        driver.refresh()
+
+        driver.find_element("id", 'nav-search-dropdown-card').click()
+
+        dropdown_element = driver.find_element("id", "searchDropdownBox")
+        dropdown = Select(dropdown_element)
+        desired_value = "search-alias=stripbooks"
+        dropdown.select_by_value(desired_value)
+
+        driver.find_element("id", 'twotabsearchtextbox').click()
 
 
-    postal_code_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
-    )
-    postal_code_input.clear()
-    postal_code_input.send_keys('10001')
 
-    apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
-    apply_button.click()
-
-    apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
-    apply_buttons.click()
-
-    driver.refresh()
-
-    driver.find_element("id", 'nav-search-dropdown-card').click()
-
-    dropdown_element = driver.find_element("id", "searchDropdownBox")
-    dropdown = Select(dropdown_element)
-    desired_value = "search-alias=stripbooks"
-    dropdown.select_by_value(desired_value)
-
-    driver.find_element("id", 'twotabsearchtextbox').click()
 
     driver.execute_script("window.open();")
     driver.switch_to.window(driver.window_handles[1])
@@ -231,6 +295,8 @@ print(f"""{bcolors.HEADER}
 """)
 
 choice = int(input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Your Choice: {bcolors.ENDC}"))
+market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
+
 if choice == 1:
     extractkey()
 
