@@ -164,13 +164,25 @@ def keyextra():
             EC.presence_of_element_located((By.ID, 'GLUXZipUpdateInput'))
         )
         postal_code_input.clear()
-        postal_code_input.send_keys('10001')
 
-        apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
-        apply_button.click()
+        if market == "com" or market == "COM":
+            postal_code_input.send_keys('10001')
+            apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
+            apply_button.click()
 
-        apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
-        apply_buttons.click()
+            apply_buttons = driver.find_element(By.XPATH, '//*[@id="a-popover-1"]/div/div[2]/span/span/span/button')
+            apply_buttons.click()
+
+        else:
+            postal_code_input.send_keys('AL3 8QE')
+            apply_button = driver.find_element(By.XPATH, '//*[@id="GLUXZipUpdate"]/span/input')
+            apply_button.click()
+            pause.seconds(1)
+
+
+
+
+        #
 
         driver.refresh()
 
