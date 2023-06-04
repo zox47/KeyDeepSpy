@@ -50,8 +50,6 @@ def checkbsr(driver):
         if driver.find_element(By.CSS_SELECTOR, "div.text-sm.text-dark.font-weight-bold").text != "Preparing the results...":
             driver.refresh()
             checkbsr(driver)
-        else:
-            pass
     except:
         pass
 
