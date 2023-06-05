@@ -1,5 +1,18 @@
 # INSTALL PACKAGE
 import os
+from os.path import exists
+
+file_exists = exists('keywords')
+file_exist2 = exists('sugesstion')
+
+if file_exists == False:
+    os.mkdir('keywords')
+
+if file_exist2 == False:
+    os.mkdir('sugesstion')
+
+
+
 try:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
