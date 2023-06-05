@@ -83,7 +83,7 @@ class bcolors:
 
 
 
-def keyextra(market):
+def keyextra(market,mainkeyword):
     # Get the current date and time
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime("%Y-%m-%d")
@@ -248,7 +248,6 @@ def keyextra(market):
     driver.execute_script("window.open();")
     driver.switch_to.window(driver.window_handles[1])
 
-    mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keyword: {bcolors.ENDC}")
     query = f'chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={mainkeyword}&service=amazon'
     driver.get(query)
 
@@ -395,7 +394,9 @@ if choice == 1:
         exit()
 elif choice == 2:
     market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
-    keyextra(market)
+    mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keyword: {bcolors.ENDC}")
+
+    keyextra(market,mainkeyword)
 elif choice == 3:
     sortbsr()
 
