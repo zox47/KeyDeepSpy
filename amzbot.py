@@ -14,6 +14,7 @@ try:
     import csv
 except ImportError:
     os.system('pip install python-csv')
+    os.system('pip install csv')
 try:
     from webdriver_manager.chrome import ChromeDriverManager
 except ImportError:
@@ -40,7 +41,7 @@ except ImportError:
 
 def extractkey():
     dirs = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Location Of Your File Keyword:{bcolors.ENDC} ")
-    for key in open(dirs, 'r').read().split('\n'):
+    for key in open(f'keywords\{dirs}', 'r').read().split('\n'):
         co = key.split(':', 3)
         print(co[0])
 def checkbsr(driver):
@@ -90,7 +91,7 @@ def keyextra(market,mainkeyword):
 
 
     # get the current working directory
-    download_directory = os.getcwd()
+    download_directory = f'{os.getcwd()}\sugesstion'
 
 
     options = webdriver.ChromeOptions()
@@ -109,7 +110,8 @@ def keyextra(market,mainkeyword):
     options.add_argument("--disable-popup-blocking")
     options.add_extension('getkeyword.crx')
     options.add_extension('bsr.crx')
-   # options.add_argument("--disable-popup-blocking")
+
+    # options.add_argument("--disable-popup-blocking")
 
     options.add_experimental_option('prefs', {
         'download.default_directory': download_directory,
@@ -120,9 +122,7 @@ def keyextra(market,mainkeyword):
 
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    print(f"{bcolors.HEADER}{bcolors.BOLD}----------------------------------{bcolors.ENDC}")
 
-    print(f"{bcolors.HEADER}{bcolors.BOLD}BY MR.ZOX47{bcolors.ENDC}")
     if market == "com" or market == "uk":
         if market == "uk":
             driver.get('https://www.amazon.co.uk/')
@@ -256,10 +256,10 @@ def keyextra(market,mainkeyword):
 
 
     til = mainkeyword.replace(' ', '-')
-    csv_file_path = f'amazon-keywords-{til}--{formatted_datetime}.csv'
-
+    csv_file_path = f'{os.getcwd()}\sugesstion\\amazon-keywords-{til}--{formatted_datetime}.csv'
     print(
         f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Total Keyword Find{bcolors.ENDC} ===> {len(open(csv_file_path, 'r').read().splitlines())}")
+
 
     with open(csv_file_path, 'r') as file:
         csv_reader = csv.reader(file)
@@ -320,7 +320,7 @@ def keyextra(market,mainkeyword):
     save = input(
         f"{bcolors.OKGREEN}+{bcolors.ENDC} Save this keyword in File {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
     if save == "y" or  save == "Y":
-        file = open(f'keyword-{til}.txt', 'w')
+        file = open(f'keywords\keyword-{til}.txt', 'w')
         sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
         for i in sorted_list:
             file.write(i + "\n")
@@ -348,7 +348,7 @@ def sortbsr():
     sorted_list = []
     data = []
     dirs = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Dir Of Your File Keyword:{bcolors.ENDC} ")
-    for key in open(dirs, 'r').read().split('\n'):
+    for key in open(f'keywords\{dirs}', 'r').read().split('\n'):
         sorted_list.append(key)
 
     clean = [item for item in sorted_list if item]
