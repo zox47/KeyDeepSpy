@@ -97,7 +97,7 @@ class bcolors:
 
 
 
-def keyextra(market,mainkeyword):
+def keyextra(market,mainkeyword, keywexist):
     # Get the current date and time
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime("%Y-%m-%d")
@@ -255,34 +255,41 @@ def keyextra(market,mainkeyword):
 
         driver.find_element("id", 'twotabsearchtextbox').click()
 
-
-
-
-    driver.execute_script("window.open();")
-    driver.switch_to.window(driver.window_handles[1])
-
-    query = f'chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={mainkeyword}&service=amazon'
-    driver.get(query)
-
     listk = []
-    input(f'{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Are the keywords downloaded! | Press Enter{bcolors.ENDC} \n')
+    if keywexist == "y":
+        isd = input("Enter the location of keyword: ")
+        fills = open(isd, 'r').read().split("\n")
+        for i in fills:
+            listk.append(i)
+        print(
+            f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Total Keyword Find{bcolors.ENDC} ===> {len(open(isd, 'r').read().splitlines())}")
+
+    else:
+        driver.execute_script("window.open();")
+        driver.switch_to.window(driver.window_handles[1])
+
+        query = f'chrome-extension://hbapdpeemoojbophdfndmlgdhppljgmp/html/page.html?page=autocomplete&query={mainkeyword}&service=amazon'
+        driver.get(query)
 
 
-    til = mainkeyword.replace(' ', '-')
-    csv_file_path = f'{os.getcwd()}\sugesstion\\amazon-keywords-{til}--{formatted_datetime}.csv'
-    print(
-        f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Total Keyword Find{bcolors.ENDC} ===> {len(open(csv_file_path, 'r').read().splitlines())}")
+        input(f'{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Are the keywords downloaded! | Press Enter{bcolors.ENDC} \n')
 
 
-    with open(csv_file_path, 'r') as file:
-        csv_reader = csv.reader(file)
-        first_column = [row[0] for row in csv_reader]
-        for value in first_column:
-            if str(value) != 'Keyword':
-                listk.append(value)
+        til = mainkeyword.replace(' ', '-')
+        csv_file_path = f'{os.getcwd()}\sugesstion\\amazon-keywords-{til}--{formatted_datetime}.csv'
+        print(
+            f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Total Keyword Find{bcolors.ENDC} ===> {len(open(csv_file_path, 'r').read().splitlines())}")
 
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
+
+        with open(csv_file_path, 'r') as file:
+            csv_reader = csv.reader(file)
+            first_column = [row[0] for row in csv_reader]
+            for value in first_column:
+                if str(value) != 'Keyword':
+                    listk.append(value)
+
+        driver.close()
+        driver.switch_to.window(driver.window_handles[0])
 
     count = 0
     ll = []
@@ -333,29 +340,56 @@ def keyextra(market,mainkeyword):
     save = input(
         f"{bcolors.OKGREEN}+{bcolors.ENDC} Save this keyword in File {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
     if save == "y" or  save == "Y":
-        file = open(f'keywords\keyword-{til}.txt', 'w')
-        sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
-        for i in sorted_list:
-            file.write(i + "\n")
-        file.close()
+        if keywexist == "y":
+            file = open(f'keywords\keywordsimple.txt', 'w')
+            sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
+            for i in sorted_list:
+                file.write(i + "\n")
+            file.close()
 
-        data = []
-        for item in sorted_list:
-            keyword, count, value = item.split(':')
-            data.append([keyword, count, value])
+            data = []
+            for item in sorted_list:
+                keyword, count, value = item.split(':')
+                data.append([keyword, count, value])
 
-        df = pd.DataFrame(data, columns=['Keyword', 'Results', 'Bsr'])
+            df = pd.DataFrame(data, columns=['Keyword', 'Results', 'Bsr'])
 
-        # Display DataFrame as ASCII table
-        print(tabulate(df, headers='keys', tablefmt='psql'))
+            # Display DataFrame as ASCII table
+            print(tabulate(df, headers='keys', tablefmt='psql'))
 
-        again = input(
-            f"{bcolors.OKGREEN}+{bcolors.ENDC} Start New Session: {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
-        if again == "y" or again == "Y":
-            driver.close()
-            keyextra()
-    else:
-        driver.close()
+            again = input(
+                f"{bcolors.OKGREEN}+{bcolors.ENDC} Start New Session: {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
+            if again == "y" or again == "Y":
+                driver.close()
+                keyextra()
+            else:
+                driver.close()
+
+
+        else:
+            file = open(f'keywords\keyword-{til}.txt', 'w')
+            sorted_list = sorted(ll, key=lambda item: int(item.split(':')[2].replace(',', '')))
+            for i in sorted_list:
+                file.write(i + "\n")
+            file.close()
+
+            data = []
+            for item in sorted_list:
+                keyword, count, value = item.split(':')
+                data.append([keyword, count, value])
+
+            df = pd.DataFrame(data, columns=['Keyword', 'Results', 'Bsr'])
+
+            # Display DataFrame as ASCII table
+            print(tabulate(df, headers='keys', tablefmt='psql'))
+
+            again = input(
+                f"{bcolors.OKGREEN}+{bcolors.ENDC} Start New Session: {bcolors.OKGREEN}Y{bcolors.ENDC} | {bcolors.FAIL}N{bcolors.ENDC} :")
+            if again == "y" or again == "Y":
+                driver.close()
+                keyextra()
+            else:
+                driver.close()
 
 def sortbsr():
     sorted_list = []
@@ -408,8 +442,8 @@ if choice == 1:
 elif choice == 2:
     market = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter Market | com | fr | uk |:{bcolors.ENDC} ")
     mainkeyword = input(f"{bcolors.OKGREEN}+{bcolors.ENDC} {bcolors.BOLD}Enter The Main Keyword: {bcolors.ENDC}")
-
-    keyextra(market,mainkeyword)
+    keywexist = input("Are You have aleardy keyword: ")
+    keyextra(market,mainkeyword,keywexist)
 elif choice == 3:
     sortbsr()
 
