@@ -14,3 +14,4 @@ Additional Data: The tool can also provide additional information alongside the 
 Overall, this tool assists sellers and marketers in optimizing their Amazon product listings by suggesting relevant keywords and providing insights into market demand through BSR analysis. By sorting the results in a table, users can easily identify high-potential keywords and prioritize them for their marketing strategies.
 
 ![carbon](https://github.com/zox47/amazonkeyword/assets/53087330/3588dd77-dfab-4994-8a9c-148eb16195fc)
+![Screenshot 2023-09-04 203606](https://github.com/zox47/KeyDeepSpy/assets/53087330/68c41976-b1c2-466a-b725-ff09f925fd70)
